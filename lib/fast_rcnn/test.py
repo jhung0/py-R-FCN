@@ -13,6 +13,8 @@ import argparse
 from utils.timer import Timer
 import numpy as np
 import cv2
+import matplotlib 
+matplotlib.use('Agg')
 import caffe
 from fast_rcnn.nms_wrapper import nms
 import cPickle

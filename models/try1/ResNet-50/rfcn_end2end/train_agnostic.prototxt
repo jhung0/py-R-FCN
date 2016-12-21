@@ -3728,7 +3728,7 @@ layer {
 layer {
     bottom: "conv_new_1"
     top: "rfcn_cls"
-    name: "rfcn_cls"
+    name: "rfcn_cls-2"
     type: "Convolution"
     convolution_param {
         num_output: 343 #1029 #21*(7^2) cls_num*(score_maps_size^2)
@@ -3781,7 +3781,7 @@ layer {
     bottom: "rfcn_cls"
     bottom: "rois"
     top: "psroipooled_cls_rois"
-    name: "psroipooled_cls_rois"
+    name: "psroipooled_cls_rois-2"
     type: "PSROIPooling"
     psroi_pooling_param {
         spatial_scale: 0.0625

@@ -243,7 +243,7 @@ def test_net(net, imdb, max_per_image=400, thresh=-np.inf, vis=False):
     if not cfg.TEST.HAS_RPN:
         roidb = imdb.roidb
 
-    for i in xrange(num_images):
+    for i in xrange(1):#num_images):
         # filter out any ground truth boxes
         if cfg.TEST.HAS_RPN:
             box_proposals = None
@@ -258,6 +258,7 @@ def test_net(net, imdb, max_per_image=400, thresh=-np.inf, vis=False):
         im = cv2.imread(imdb.image_path_at(i))
         _t['im_detect'].tic()
         scores, boxes = im_detect(net, im, box_proposals)
+	print scores[0]
         _t['im_detect'].toc()
 
         _t['misc'].tic()

@@ -164,14 +164,14 @@ def im_detect(net, im, boxes=None):
     if cfg.TEST.SVM:
         # use the raw scores before softmax under the assumption they
         # were trained as linear SVMs
-        scores = net.blobs['cls_score'].data
+        scores = net.blobs['cls_score-2'].data
     else:
         # use softmax estimated probabilities
         scores = blobs_out['cls_prob']
 
     if cfg.TEST.BBOX_REG:
         # Apply bounding-box regression deltas
-        box_deltas = blobs_out['bbox_pred']
+        box_deltas = blobs_out['bbox_pred-2']
         pred_boxes = bbox_transform_inv(boxes, box_deltas)
         pred_boxes = clip_boxes(pred_boxes, im.shape)
     else:
@@ -243,7 +243,7 @@ def test_net(net, imdb, max_per_image=400, thresh=-np.inf, vis=False):
     if not cfg.TEST.HAS_RPN:
         roidb = imdb.roidb
 
-    for i in xrange(1):#num_images):
+    for i in xrange(num_images):
         # filter out any ground truth boxes
         if cfg.TEST.HAS_RPN:
             box_proposals = None

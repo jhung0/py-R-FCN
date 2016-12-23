@@ -8,7 +8,7 @@ layer {
   python_param {
     module: 'roi_data_layer.layer'
     layer: 'RoIDataLayer'
-    param_str: "'num_classes': 21"
+    param_str: "'num_classes': 7"#21"
   }
 }
 
@@ -3529,7 +3529,7 @@ layer {
 layer {
   name: "rpn_conv/3x3"
   type: "Convolution"
-  bottom: "res5c"
+  bottom: "res4f" #"res5c"
   top: "rpn/output"
   param { lr_mult: 1.0 }
   param { lr_mult: 2.0 }
@@ -3687,7 +3687,7 @@ layer {
   python_param {
     module: 'rpn.proposal_target_layer'
     layer: 'ProposalTargetLayer'
-    param_str: "'num_classes': 21"
+    param_str: "'num_classes': 7" #21"
   }
 }
 
@@ -3727,11 +3727,11 @@ layer {
 
 layer {
     bottom: "conv_new_1"
-    top: "rfcn_cls"
-    name: "rfcn_cls"
+    top: "rfcn_cls-2"
+    name: "rfcn_cls-2"
     type: "Convolution"
     convolution_param {
-        num_output: 1029 #21*(7^2) cls_num*(score_maps_size^2)
+        num_output: 343 #1029 = 21*(7^2) cls_num*(score_maps_size^2)
         kernel_size: 1
         pad: 0
         weight_filler {
@@ -3752,11 +3752,11 @@ layer {
 }
 layer {
     bottom: "conv_new_1"
-    top: "rfcn_bbox"
-    name: "rfcn_bbox"
+    top: "rfcn_bbox-2"
+    name: "rfcn_bbox-2"
     type: "Convolution"
     convolution_param {
-        num_output: 4116 #8*(7^2) cls_num*(score_maps_size^2)
+        num_output: 1372  #4116 = 84*(7^2) 4*cls_num*(score_maps_size^2)
         kernel_size: 1
         pad: 0
         weight_filler {
@@ -3778,14 +3778,14 @@ layer {
 
 #--------------position sensitive RoI pooling--------------
 layer {
-    bottom: "rfcn_cls"
+    bottom: "rfcn_cls-2"
     bottom: "rois"
     top: "psroipooled_cls_rois"
     name: "psroipooled_cls_rois"
     type: "PSROIPooling"
     psroi_pooling_param {
         spatial_scale: 0.0625
-        output_dim: 21
+        output_dim: 7 #21
         group_size: 7
     }
 }
@@ -3804,14 +3804,14 @@ layer {
 
 
 layer {
-    bottom: "rfcn_bbox"
+    bottom: "rfcn_bbox-2"
     bottom: "rois"
     top: "psroipooled_loc_rois"
     name: "psroipooled_loc_rois"
     type: "PSROIPooling"
     psroi_pooling_param {
         spatial_scale: 0.0625
-        output_dim: 84
+        output_dim: 28 #84
         group_size: 7
     }
 }

@@ -1,6 +1,6 @@
 name: "VGG_CNN_M_1024"
 layer {
-  name: 'input-data-2'
+  name: 'input-data'
   type: 'Python'
   top: 'data'
   top: 'im_info'
@@ -8,11 +8,11 @@ layer {
   python_param {
     module: 'roi_data_layer.layer'
     layer: 'RoIDataLayer'
-    param_str: "'num_classes': 7" #21"
+    param_str: "'num_classes': 7"#21"
   }
 }
 layer {
-  name: "conv1-2"
+  name: "conv1"
   type: "Convolution"
   bottom: "data"
   top: "conv1"
@@ -31,13 +31,13 @@ layer {
   }
 }
 layer {
-  name: "relu1-2"
+  name: "relu1"
   type: "ReLU"
   bottom: "conv1"
   top: "conv1"
 }
 layer {
-  name: "norm1-2"
+  name: "norm1"
   type: "LRN"
   bottom: "conv1"
   top: "norm1"
@@ -326,7 +326,7 @@ layer {
 #}
 
 layer {
-  name: 'roi-data-2'
+  name: 'roi-data'
   type: 'Python'
   bottom: 'rpn_rois'
   bottom: 'gt_boxes'
@@ -420,7 +420,7 @@ layer {
   name: "cls_score-2"
   type: "InnerProduct"
   bottom: "fc7"
-  top: "cls_score"
+  top: "cls_score-2"
   param {
     lr_mult: 1
   }
@@ -443,7 +443,7 @@ layer {
   name: "bbox_pred-2"
   type: "InnerProduct"
   bottom: "fc7"
-  top: "bbox_pred"
+  top: "bbox_pred-2"
   param {
     lr_mult: 1
   }
@@ -465,7 +465,7 @@ layer {
 layer {
   name: "loss_cls"
   type: "SoftmaxWithLoss"
-  bottom: "cls_score"
+  bottom: "cls_score-2"
   bottom: "labels"
   propagate_down: 1
   propagate_down: 0
@@ -475,7 +475,7 @@ layer {
 layer {
   name: "loss_bbox"
   type: "SmoothL1Loss"
-  bottom: "bbox_pred"
+  bottom: "bbox_pred-2"
   bottom: "bbox_targets"
   bottom: "bbox_inside_weights"
   bottom: "bbox_outside_weights"

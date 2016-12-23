@@ -3727,7 +3727,7 @@ layer {
 
 layer {
     bottom: "conv_new_1"
-    top: "rfcn_cls"
+    top: "rfcn_cls-2"
     name: "rfcn_cls-2"
     type: "Convolution"
     convolution_param {
@@ -3752,8 +3752,8 @@ layer {
 }
 layer {
     bottom: "conv_new_1"
-    top: "rfcn_bbox"
-    name: "rfcn_bbox"
+    top: "rfcn_bbox-2"
+    name: "rfcn_bbox-2"
     type: "Convolution"
     convolution_param {
         num_output: 392 #8*(7^2) cls_num*(score_maps_size^2)
@@ -3778,7 +3778,7 @@ layer {
 
 #--------------position sensitive RoI pooling--------------
 layer {
-    bottom: "rfcn_cls"
+    bottom: "rfcn_cls-2"
     bottom: "rois"
     top: "psroipooled_cls_rois"
     name: "psroipooled_cls_rois"
@@ -3792,7 +3792,7 @@ layer {
 
 layer {
     bottom: "psroipooled_cls_rois"
-    top: "cls_score"
+    top: "cls_score-2"
     name: "ave_cls_score_rois"
     type: "Pooling"
     pooling_param {
@@ -3804,7 +3804,7 @@ layer {
 
 
 layer {
-    bottom: "rfcn_bbox"
+    bottom: "rfcn_bbox-2"
     bottom: "rois"
     top: "psroipooled_loc_rois"
     name: "psroipooled_loc_rois"
@@ -3818,7 +3818,7 @@ layer {
 
 layer {
     bottom: "psroipooled_loc_rois"
-    top: "bbox_pred"
+    top: "bbox_pred-2"
     name: "ave_bbox_pred_rois"
     type: "Pooling"
     pooling_param {
@@ -3833,7 +3833,7 @@ layer {
 layer {
    name: "per_roi_loss_cls"
    type: "SoftmaxWithLossOHEM"
-   bottom: "cls_score"
+   bottom: "cls_score-2"
    bottom: "labels"
    top: "temp_loss_cls"
    top: "temp_prob_cls"
@@ -3848,7 +3848,7 @@ layer {
 layer {
    name: "per_roi_loss_bbox"
    type: "SmoothL1LossOHEM"
-   bottom: "bbox_pred"
+   bottom: "bbox_pred-2"
    bottom: "bbox_targets"
    bottom: "bbox_inside_weights"
    top: "temp_loss_bbox"
@@ -3902,7 +3902,7 @@ layer {
 layer {
    name: "loss"
    type: "SoftmaxWithLoss"
-   bottom: "cls_score"
+   bottom: "cls_score-2"
    bottom: "labels_ohem"
    top: "loss_cls"
    loss_weight: 1
@@ -3914,9 +3914,9 @@ layer {
 }
 
 layer {
-   name: "accuarcy"
+   name: "accuracy"
    type: "Accuracy"
-   bottom: "cls_score"
+   bottom: "cls_score-2"
    bottom: "labels_ohem"
    top: "accuarcy"
    #include: { phase: TEST }
@@ -3930,7 +3930,7 @@ layer {
 layer {
    name: "loss_bbox"
    type: "SmoothL1LossOHEM"
-   bottom: "bbox_pred"
+   bottom: "bbox_pred-2"
    bottom: "bbox_targets"
    bottom: "bbox_loss_weights_ohem"
    top: "loss_bbox"

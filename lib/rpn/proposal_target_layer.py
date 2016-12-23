@@ -24,7 +24,7 @@ class ProposalTargetLayer(caffe.Layer):
     def setup(self, bottom, top):
         layer_params = yaml.load(self.param_str)
         self._num_classes = layer_params['num_classes']
-
+	print '# of classes ', self._num_classes
         # sampled rois (0, x1, y1, x2, y2)
         top[0].reshape(1, 5, 1, 1)
         # labels
